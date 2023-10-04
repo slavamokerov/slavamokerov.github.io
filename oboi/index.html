@@ -12,6 +12,7 @@
     <div>
       <label for="image_uploads" class="img-upload-btn">Выбрать фотообою...</label>
       <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" style="opacity: 0;">
+      
       <img src="./rozetka.png" style="cursor:pointer" width="50" height="50" id="rozetka" class="draggable" touch-action="none"
   user-select="none">
       <img src="./telek.png" style="cursor:pointer" width="308" height="500" id="telek" class="draggable" touch-action="none"
@@ -32,9 +33,17 @@
       font-family: Arial;
     }
 
+    body, html {
+      height: 100%;
+    }
+
+
     .profile-img {
       max-width: 100%;
-      height:100vh;
+      height:100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
     .img-upload-btn {
