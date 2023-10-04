@@ -9,7 +9,8 @@
 
   <p>Drag the ball.</p>
 
-  <img src="https://js.cx/clipart/ball.svg" style="cursor:pointer" width="40" height="40" id="ball" class="draggable">
+  <img src="https://js.cx/clipart/ball.svg" style="cursor:pointer" width="40" height="40" id="ball" class="draggable" touch-action="none"
+  user-select="none">
 
 
   <script>
@@ -19,6 +20,7 @@
         this.shiftX = null
         this.shiftY = null
         this.onMouseDown = this.onMouseDown.bind(this)
+        this.onTouchMove = this.onTouchMove.bind(this)
         this.onMouseMove = this.onMouseMove.bind(this)
         this.onMouseUp = this.onMouseUp.bind(this)
         this.addEventHandlers()
@@ -26,19 +28,29 @@
 
       addEventHandlers() {
         this.el.addEventListener('mousedown', this.onMouseDown)
-          this.el.addEventListener('touchstart', this.onMouseDown)
+          this.el.addEventListener('touchmove', this.onTouchMove)
           
         this.el.addEventListener('dragstart', e => e.preventDefault())
+          this.el.addEventListener('touchmove', e => e.preventDefault())
+        
         document.addEventListener('mouseup', this.onMouseUp)
-          document.addEventListener('touchend', this.onMouseUp)
+          //document.addEventListener('touchend', this.onMouseUp)
       }
 
       onMouseDown(e) {
         this.getDragPointer(e.clientX, e.clientY)
         this.prepareElement()
         this.moveElementTo(e.pageX, e.pageY)
+
         document.addEventListener('mousemove', this.onMouseMove)
-          document.addEventListener('touchmove', this.onMouseMove)
+      }
+
+      onTouchMove(e) {
+        this.prepareElement()
+        var touchLocation = e.targetTouches[0];
+        
+        this.el.style.left = touchLocation.pageX + 'px';
+        this.el.style.top = touchLocation.pageY + 'px';
       }
 
       getDragPointer(x, y) {
@@ -65,7 +77,6 @@
 
       onMouseUp(e) {
         document.removeEventListener('mousemove', this.onMouseMove)
-          document.removeEventListener('touchmove', this.onMouseMove)
       }
 
     }
