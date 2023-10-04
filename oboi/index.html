@@ -13,18 +13,18 @@
       <label for="image_uploads" class="img-upload-btn">Выбрать фотообою...</label>
       <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" style="opacity: 0;">
       
-      <img src="./rozetka.png" style="cursor:pointer" width="50" height="50" id="rozetka" class="draggable" touch-action="none"
-  user-select="none">
-      <img src="./telek.png" style="cursor:pointer" width="308" height="500" id="telek" class="draggable" touch-action="none"
-  user-select="none">
     </div>
 
     <br>
 
     <div class="preview">
-      <p class="no-pic">место для обоев</p>
+      <img src="./rozetka.png" style="cursor:pointer; visibility:hidden" width="50" height="50" id="rozetka" class="draggable" touch-action="none"
+  user-select="none">
+    <img src="./telek.png" style="cursor:pointer; visibility:hidden" width="308" height="500" id="telek" class="draggable" touch-action="none"
+  user-select="none">
       <img src="" class="profile-img" style="opacity: 0;">
     </div>
+
   </div>
 
   <style type="text/css">
@@ -60,14 +60,16 @@
   <script>
     const input = document.querySelector("input");
     const preview = document.querySelector(".preview");
-    const para = document.querySelector(".no-pic");
     const image = document.querySelector(".profile-img");
     input.addEventListener("change", updateImageDisplay);
+    
     function updateImageDisplay() {
-      para.style.display = "none";
       const curFiles = input.files;
       image.src = URL.createObjectURL(curFiles[0]);
       image.style.opacity = 1;
+
+      document.getElementById('rozetka').style.visibility = "visible";
+      document.getElementById('telek').style.visibility = "visible";
     }
 
 
@@ -91,7 +93,6 @@
           this.el.addEventListener('touchmove', e => e.preventDefault())
         
         document.addEventListener('mouseup', this.onMouseUp)
-          //document.addEventListener('touchend', this.onMouseUp)
       }
 
       onMouseDown(e) {
