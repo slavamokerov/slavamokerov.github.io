@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Мои обои</title>
+</head>
+
+<body>
+
+  <div class="img-wrapper">
+    <div>
+      <label for="image_uploads" class="img-upload-btn">Выбрать фотообою...</label>
+      <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" style="opacity: 0;">
+      <img src="./rozetka.png" style="cursor:pointer" width="50" height="50" id="rozetka" class="draggable" touch-action="none"
+  user-select="none">
+      <img src="./telek.png" style="cursor:pointer" width="308" height="500" id="telek" class="draggable" touch-action="none"
+  user-select="none">
+    </div>
+
+    <br>
+
+    <div class="preview">
+      <p class="no-pic">место для обоев</p>
+      <img src="" class="profile-img" style="opacity: 0;">
+    </div>
+  </div>
+
+  <style type="text/css">
+    * {
+      font-size: 100%;
+      font-family: Arial;
+    }
+
+    .profile-img {
+      max-width: 100%;
+      height:100vh;
+    }
+
+    .img-upload-btn {
+      border: 1px solid black;
+      padding: 10px 10px;
+    }
+
+    .img-wrapper {
+      padding: 10px;
+    }
+  </style>
+
+
+  <script>
+    const input = document.querySelector("input");
+    const preview = document.querySelector(".preview");
+    const para = document.querySelector(".no-pic");
+    const image = document.querySelector(".profile-img");
+    input.addEventListener("change", updateImageDisplay);
+    function updateImageDisplay() {
+      para.style.display = "none";
+      const curFiles = input.files;
+      image.src = URL.createObjectURL(curFiles[0]);
+      image.style.opacity = 1;
+    }
+
+
+    class Draggable {
+      constructor(el) {
+        this.el = el
+        this.shiftX = null
+        this.shiftY = null
+        this.onMouseDown = this.onMouseDown.bind(this)
+        this.onTouchMove = this.onTouchMove.bind(this)
+        this.onMouseMove = this.onMouseMove.bind(this)
+        this.onMouseUp = this.onMouseUp.bind(this)
+        this.addEventHandlers()
+      }
+
+      addEventHandlers() {
+        this.el.addEventListener('mousedown', this.onMouseDown)
+          this.el.addEventListener('touchmove', this.onTouchMove)
+          
+        this.el.addEventListener('dragstart', e => e.preventDefault())
+          this.el.addEventListener('touchmove', e => e.preventDefault())
+        
+        document.addEventListener('mouseup', this.onMouseUp)
+          //document.addEventListener('touchend', this.onMouseUp)
+      }
+
+      onMouseDown(e) {
+        this.getDragPointer(e.clientX, e.clientY)
+        this.prepareElement()
+        this.moveElementTo(e.pageX, e.pageY)
+
+        document.addEventListener('mousemove', this.onMouseMove)
+      }
+
+      onTouchMove(e) {
+        this.prepareElement()
+        var touchLocation = e.targetTouches[0];
+        
+        this.el.style.left = touchLocation.pageX + 'px';
+        this.el.style.top = touchLocation.pageY + 'px';
+      }
+
+      getDragPointer(x, y) {
+        const elRect = this.el.getBoundingClientRect()
+        this.shiftX = x - elRect.left
+        this.shiftY = y - elRect.top
+      }
+
+      prepareElement() {
+        this.el.style.position = 'absolute'
+        this.el.style.zIndex = 999
+      }
+
+      moveElementTo(x, y) {
+        const leftPosition = x - this.shiftX < 0 ? 0 : x - this.shiftX;
+        const topPosition = y - this.shiftY < 0 ? 0 : y - this.shiftY
+        this.el.style.left = `${leftPosition}px`
+        this.el.style.top = `${topPosition}px`
+      }
+
+      onMouseMove(e) {
+        this.moveElementTo(e.pageX, e.pageY)
+      }
+
+      onMouseUp(e) {
+        document.removeEventListener('mousemove', this.onMouseMove)
+      }
+
+    }
+
+    const draggables = document.querySelectorAll('.draggable')
+
+    for (let draggable of draggables) {
+      new Draggable(draggable)
+    }
+  </script>
+
+
+</body>
+</html>
